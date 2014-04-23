@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* LuckyPants
+sh target/bin/webapp
