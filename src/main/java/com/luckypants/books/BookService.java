@@ -2,49 +2,32 @@ package com.luckypants.books;
 
 import java.util.ArrayList;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.luckypants.model.Book;
+import com.luckypants.command.ListAllBooksCommand;
+import com.mongodb.DBObject;
 
 @Path("/books")
 public class BookService {
 
-	ArrayList books = new ArrayList();
-	Book book1 = new Book();
-
 	@GET
-	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getBook() {
-		String response = books.toString();
-		return Response.status(200).entity(response).build();
+		ListAllBooksCommand listBooks = new ListAllBooksCommand();
+		ArrayList<DBObject> list = listBooks.execute();
+		return Response.status(200).entity(list).build();
 	}
 
 	@GET
-	@Path("/{username}")
+	@Path("/{isbn}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response getName(@PathParam("username") String userName) {
-		String response = "Hello " + userName;
-		return Response.status(200).entity(response).build();
+	public Response getName(@PathParam("isbn") String isbn) {
+		return Response.status(200).entity("").build();
 	}
 
-	@POST
-	@Path("/")
-	@Consumes("application/x-www-form-urlencoded")
-	public Response setBook(@FormParam("title") String title,
-			@FormParam("author") String author) {
-		book1.setTitle(title);
-		book1.setAuthor(author);
-		books.add(book1);
-		String response = "Title:" + book1.getTitle() + " " + "Author:"
-				+ book1.getAuthor();
-		return Response.status(201).entity(response).build();
-	}
 }
