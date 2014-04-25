@@ -71,7 +71,7 @@ public class MongoTest {
 			}
 			
 			/**
-			 * update a book
+			 * update a book - this will update only one record
 			 */
 			searchQuery.put("title", "Lucky Pants");
 		 
@@ -85,10 +85,22 @@ public class MongoTest {
 			
 
 			/**
-			 * Delete book by title
+			 * Delete book by title - this will delete only one book
 			 */
 			searchQuery.put("title", "Lucky Pants");
 			booksColl.remove(searchQuery);
+			
+			/**
+			 * Delete all books by title
+			 */
+			searchQuery.put("title", "Lucky Pants");
+			
+			cursor = booksColl.find(searchQuery);
+
+			while (cursor.hasNext()) {
+				booksColl.remove(searchQuery);
+			}
+			
 			
 			/**
 			 * End

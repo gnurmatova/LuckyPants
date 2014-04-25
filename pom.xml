@@ -8,7 +8,8 @@
 
 	<properties>
 		<tomcat.version>7.0.34</tomcat.version>
-		<jersey.version>1.8</jersey.version>
+		<jersey.version>1.9</jersey.version>
+		<jackson.version>1.8.1</jackson.version>
 		<target.version>1.6</target.version>
 		<appassembler.version>1.8</appassembler.version>
 		<source.version>1.6</source.version>
@@ -40,6 +41,16 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.10.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>

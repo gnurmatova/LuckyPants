@@ -1,33 +1,39 @@
 package com.luckypants.command;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.luckypants.model.Book;
 import com.luckypants.mongo.BooksConnectionProvider;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
 public class CreateBookCommand {
 
-	/**
-	 * TODO:modify this command such that book details are sent to this method
-	 * as parameters
-	 * 
-	 * @return
-	 */
-	public boolean execute() {
+	public boolean execute(Book book) {
 		BooksConnectionProvider booksConn = new BooksConnectionProvider();
 		DBCollection booksCollection = booksConn.getCollection();
 
-		BasicDBObject document = new BasicDBObject();
-		document.put("title", "Lucky Pants");
-		document.put("author", "John Doe");
-		document.put("ISBN", "1234");
-		booksCollection.insert(document);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			DBObject dbObject = (DBObject) JSON.parse(mapper
+					.writeValueAsString(book));
+			booksCollection.insert(dbObject);
+		} catch (Exception e) {
+			System.out.println("ERROR during mapping book to Mongo Object");
+			return false;
+		}
 
 		return true;
 	}
 
 	public static void main(String[] args) {
 		CreateBookCommand create = new CreateBookCommand();
-		if (create.execute()) {
+		Book book = new Book();
+		book.setAuthor("Gula");
+		book.setTitle("Book2");
+		book.setISBN("123");
+		if (create.execute(book)) {
 			System.out.println("SUCCESS:Book Created");
 		} else {
 			System.out.println("ERROR:Failed to create book");
