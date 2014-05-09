@@ -13,7 +13,7 @@ public class GetBookCommand {
 		DBCollection booksCollection = booksConn.getCollection();
 
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("ISBN", isbn);
+		searchQuery.put("isbn", isbn);
 
 		DBCursor cursor = booksCollection.find(searchQuery);
 		DBObject book = cursor.next();

@@ -63,15 +63,9 @@ public class BookService {
 	
 	@DELETE
 	@Path("/{isbn}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteBook(@PathParam("isbn") String isbn) {
 		DeleteBookCommand delete = new DeleteBookCommand();
-		if(delete.execute(isbn)){
-			return Response.status(200).entity(isbn).build();
-		}
-		else{
-			return Response.status(500).entity("ERROR: Could not delete"+isbn).build();
-		}
-		
+		delete.execute(isbn);
+		return Response.status(200).build();
 	}
 }
