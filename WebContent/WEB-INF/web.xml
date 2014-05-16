@@ -11,17 +11,26 @@
 			<param-value>com.luckypants.books</param-value>
 		</init-param>
 		<init-param>
-            <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>com.algo.server.webservice;org.codehaus.jackson.jaxrs</param-value>
-        </init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.algo.server.webservice;org.codehaus.jackson.jaxrs</param-value>
+		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
 			<param-value>true</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>default2</servlet-name>
+		<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default2</servlet-name>
+		<url-pattern>/resources/*</url-pattern>
 	</servlet-mapping>
 </web-app> 

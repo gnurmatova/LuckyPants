@@ -5,8 +5,8 @@
 </script>
 <script>
 //we are reusing this URL, somove it to a variable
-base_url="http://luckypants.herokuapp.com/rest/books/";
-meta_url="http://luckypants.herokuapp.com/rest/metadata/";
+base_url="/rest/books/";
+meta_url="/rest/metadata/";
 $(document).ready(function(){
     $.getJSON(meta_url+"book",function(data){
     		$.each(data, function(key, value){
@@ -37,7 +37,7 @@ $(document).ready(function(){
     function postData(data){
         $.ajax({
                 type: "PUT",
-                url: "http://luckypants.herokuapp.com/rest/books/",
+                url: "/rest/books/",
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,

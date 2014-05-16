@@ -1,5 +1,6 @@
 package com.luckypants.books;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -11,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -18,6 +20,7 @@ import com.luckypants.command.CreateBookCommand;
 import com.luckypants.command.DeleteBookCommand;
 import com.luckypants.command.GetBookCommand;
 import com.luckypants.command.ListAllBooksCommand;
+import com.luckypants.command.ProvidePackagedFileCommand;
 import com.luckypants.model.Book;
 import com.mongodb.DBObject;
 
@@ -67,5 +70,23 @@ public class BookService {
 		DeleteBookCommand delete = new DeleteBookCommand();
 		delete.execute(isbn);
 		return Response.status(200).build();
+	}
+	
+	@GET
+	@Path("files/{filename}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFile(@PathParam("filename") String filename) {
+		try {
+			ProvidePackagedFileCommand getFile = new ProvidePackagedFileCommand();
+			InputStream is =  getFile.execute(filename);
+			
+
+			ResponseBuilder response = Response.ok((Object) is);
+			response.header("Content-Disposition", "attachment; filename=\""
+					+ filename + "\"");
+			return response.build();
+		} catch (Exception e) {
+			return Response.status(404).entity(e.getMessage()).build();
+		}
 	}
 }
