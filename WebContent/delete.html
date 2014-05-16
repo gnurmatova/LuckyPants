@@ -17,7 +17,7 @@ $(document).ready(function(){
     function deleteData(isbn){
         $.ajax({
                 type: "DELETE",
-                url: "http://localhost:5100/rest/books/"+isbn,
+                url: "/rest/books/"+isbn,
                 success: function (data, status, jqXHR) {
                     alert("deleted");
                 },
