@@ -2,33 +2,37 @@ package com.luckypants.command;
 
 import java.util.ArrayList;
 
+import com.luckypants.model.Book;
 import com.luckypants.mongo.BooksConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 
 public class ListAllBooksCommand {
-	
-	public ArrayList<DBObject> execute(){
+
+	public ArrayList<Book> execute() {
 		BooksConnectionProvider booksConn = new BooksConnectionProvider();
 		DBCollection booksCollection = booksConn.getCollection();
-		
+
 		DBCursor cursor = booksCollection.find();
-		
-		ArrayList<DBObject> books = new ArrayList<DBObject>();
+
+		ArrayList<Book> books = new ArrayList<Book>();
+		GetBookCommand getBook = new GetBookCommand();
 		try {
-		   while(cursor.hasNext()) {
-			   books.add(cursor.next());
-		   }
+			while (cursor.hasNext()) {
+				Book b = getBook.execute("_id",
+						cursor.next().get("_id").toString());
+				books.add(b);
+			}
 		} finally {
-		   cursor.close();
+			cursor.close();
 		}
 		return books;
-		
+
 	}
+
 	public static void main(String[] args) {
 		ListAllBooksCommand listBooks = new ListAllBooksCommand();
-		ArrayList<DBObject> list = listBooks.execute();
+		ArrayList<Book> list = listBooks.execute();
 		System.out.println(list);
 
 	}

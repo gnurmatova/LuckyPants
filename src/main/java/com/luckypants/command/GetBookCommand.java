@@ -1,29 +1,58 @@
 package com.luckypants.command;
 
-import com.luckypants.mongo.BooksConnectionProvider;
+import org.bson.types.ObjectId;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.luckypants.model.Author;
+import com.luckypants.model.Book;
+import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 public class GetBookCommand {
+	ObjectMapper mapper = new ObjectMapper();
 
-	public DBObject execute(String isbn) {
-		BooksConnectionProvider booksConn = new BooksConnectionProvider();
-		DBCollection booksCollection = booksConn.getCollection();
+	// modify signature of this method to now return the Book, not DBObject
+	public Book execute(String key, String value) {
+		ConnectionProvider conn = new ConnectionProvider();
+		DBCollection booksCollection = conn.getCollection("books");
 
 		BasicDBObject searchQuery = new BasicDBObject();
-		searchQuery.put("isbn", isbn);
+		if (key.equals("_id")) {
+			searchQuery.put(key, new ObjectId(value));
+		} else {
+			searchQuery.put(key, value);
+		}
 
-		DBCursor cursor = booksCollection.find(searchQuery);
-		DBObject book = cursor.next();
-		
-		return book;
+		DBObject book = booksCollection.findOne(searchQuery);
+
+		Book vBook = null;
+		// Now find the Author
+		try {
+			vBook = mapper.readValue(book.toString(), Book.class);
+			DBCollection authorsCollection = conn.getCollection("authors");
+			searchQuery = new BasicDBObject();
+			searchQuery.put("_id", new ObjectId(vBook.get_author_id()));
+
+			DBObject author = authorsCollection.findOne(searchQuery);
+			vBook.setAuthor(mapper.readValue(author.toString(), Author.class));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vBook;
 	}
-	
+
 	public static void main(String[] args) {
 		GetBookCommand command = new GetBookCommand();
-		System.out.println(command.execute("1234"));
+
+		Book b = command.execute("isbn", "1234");
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			System.out.println(mapper.writeValueAsString(b));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

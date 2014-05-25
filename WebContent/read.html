@@ -12,7 +12,7 @@ $(document).ready(function(){
     	$.each( data, function( count, object ) { 
     		if(object.isbn != undefined) {//make sure isbn is valid
     			//build the URL for the book
-    			$("div.books_list").append( "<br/><a href='"+base_url+object.isbn+"'>"+ object.title+"</a>"  );
+    			$("div.books_list").append( "<br/><a href='"+base_url+"isbn/"+object.isbn+"'>"+ object.title+"</a>"  );
     		}
     	});
     });

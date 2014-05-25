@@ -26,7 +26,6 @@ import com.luckypants.command.ListAllBooksCommand;
 import com.luckypants.command.ProvidePackagedFileCommand;
 import com.luckypants.model.Book;
 import com.luckypants.properties.PropertiesLookup;
-import com.mongodb.DBObject;
 
 @Path("/books")
 public class BookService {
@@ -36,8 +35,14 @@ public class BookService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listBooks() {
 		ListAllBooksCommand listBooks = new ListAllBooksCommand();
-		ArrayList<DBObject> list = listBooks.execute();
-		return Response.status(200).entity(list).build();
+		ArrayList<Book> list = listBooks.execute();
+		String booksString = null;
+		try {
+			booksString = mapper.writeValueAsString(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(booksString).build();
 	}
 
 	@GET
@@ -50,12 +55,18 @@ public class BookService {
 	}
 
 	@GET
-	@Path("/{isbn}")
+	@Path("/{key}/{value}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBook(@PathParam("isbn") String isbn) {
+	public Response getBook(@PathParam("key") String key, @PathParam("value") String value) {
 		GetBookCommand getBookCommand = new GetBookCommand();
-		DBObject book = getBookCommand.execute(isbn);
-		return Response.status(200).entity(book).build();
+		Book book = getBookCommand.execute(key, value);
+		String bookString = null;
+		try {
+			bookString = mapper.writeValueAsString(book);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(bookString).build();
 	}
 
 	@PUT

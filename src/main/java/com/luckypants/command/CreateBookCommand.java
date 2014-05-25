@@ -1,7 +1,10 @@
 package com.luckypants.command;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.luckypants.model.Author;
 import com.luckypants.model.Book;
 import com.luckypants.mongo.BooksConnectionProvider;
 import com.mongodb.DBCollection;
@@ -30,9 +33,18 @@ public class CreateBookCommand {
 	public static void main(String[] args) {
 		CreateBookCommand create = new CreateBookCommand();
 		Book book = new Book();
-		book.setAuthor("Gula");
+		Author author = new Author();
+		author.setFname("Gula");
+		author.setLname("Nurmatova");
+		CreateAuthorCommand createAuthor = new CreateAuthorCommand();
+		String _id = createAuthor.execute(author);
 		book.setTitle("Book2");
-		book.setISBN("123");
+		book.setISBN("1234");
+		book.set_author_id(_id);
+		ArrayList<String>genres = new ArrayList<String>();
+		genres.add("Comedy");
+		genres.add("Humor");
+		book.setGenres(genres);
 		if (create.execute(book)) {
 			System.out.println("SUCCESS:Book Created");
 		} else {
