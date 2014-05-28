@@ -57,7 +57,8 @@ public class BookService {
 	@GET
 	@Path("/{key}/{value}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBook(@PathParam("key") String key, @PathParam("value") String value) {
+	public Response getBook(@PathParam("key") String key,
+			@PathParam("value") String value) {
 		GetBookCommand getBookCommand = new GetBookCommand();
 		Book book = getBookCommand.execute(key, value);
 		String bookString = null;
@@ -147,5 +148,13 @@ public class BookService {
 		} catch (Exception e) {
 			return Response.status(404).entity(e.getMessage()).build();
 		}
+	}
+
+	@GET
+	@Path("twitter")
+	@Produces(MediaType.WILDCARD)
+	public Response textTwitter() {
+		
+		return Response.status(200).entity("").build();
 	}
 }

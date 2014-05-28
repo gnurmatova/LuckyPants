@@ -2,6 +2,10 @@
 /build/
 /bin/
 target/
+tomcat.5100/
+tomcat-users.xml
+
+twitter4j.properties
  
 # OS Files #
 .DS_Store
