@@ -6,11 +6,31 @@
 <script>
 //we are reusing this URL, somove it to a variable
 base_url="/rest/books/";
+authors_url="/rest/authors/";
 meta_url="/rest/metadata/";
+function getAuthors(){
+	
+return tmp;
+}
+
 $(document).ready(function(){
     $.getJSON(meta_url+"book",function(data){
     		$.each(data, function(key, value){
-    			if(key!="author" && key!="genres"){
+    			if(key=="_author_id"){
+    				$("div.book_div").append("<br/>Please select author: <select class='sauth' name='_author_id'>");
+    				$("div.book_div").append(function(){
+    				$.getJSON(authors_url,function(adata){
+    					$.each(adata, function(akey, avalue){
+    						$(".sauth").append("<option value='"+avalue.id+"'>"+avalue.fname+"</option>");
+    						console.log("<option value='"+avalue.id+"'>"+avalue.fname+"</option>");
+    					});
+    					
+    				});
+    				}
+    				);
+    					$("div.book_div").append("</select>");
+    			}
+    			else if(key!="author" && key!="genres"){
     				$("div.book_div").append("<br/>Please enter " + key + ":"+"<input type='text' name='"+key+"'"+">");
     			}
     		});
@@ -61,7 +81,7 @@ $(document).ready(function(){
 	<h1 style="text-align: center;">Create a new book</h1>
 	<form id="book_form" method="POST">
 		<div class="book_div"></div>
-
+		
 		<input type="Submit">
 	</form>
 </body>
