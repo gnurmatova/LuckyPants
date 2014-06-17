@@ -6,16 +6,17 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
+// @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Book {
 
 	private String title;
 
-	@JsonIgnore private Author author;
+	@JsonIgnore
+	private Author author;
 	private String _author_id;
 	private String ISBN;
-	 @JsonDeserialize(as=ArrayList.class, contentAs=String.class)
+	@JsonDeserialize(as = ArrayList.class, contentAs = String.class)
 	private ArrayList<String> genres;
 
 	public String getTitle() {
@@ -33,11 +34,12 @@ public class Book {
 	public void setISBN(String iSBN) {
 		ISBN = iSBN;
 	}
-	
+
 	public ArrayList<String> getGenres() {
 		return genres;
 	}
-	 @JsonDeserialize(as=ArrayList.class, contentAs=String.class)
+
+	@JsonDeserialize(as = ArrayList.class, contentAs = String.class)
 	public void setGenres(ArrayList<String> genres) {
 		this.genres = genres;
 	}
@@ -46,6 +48,7 @@ public class Book {
 		return author;
 	}
 
+	@JsonIgnore
 	public void setAuthor(Author author) {
 		this.author = author;
 	}

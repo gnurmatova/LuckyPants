@@ -2,6 +2,8 @@ package com.luckypants.books;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.ws.rs.Consumes;
@@ -13,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -42,7 +45,11 @@ public class BookService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Response.status(200).entity(booksString).build();
+		  CacheControl cc=new CacheControl();
+		  cc.setMaxAge(5000);
+		Response.ResponseBuilder response = Response.ok(booksString).type(MediaType.APPLICATION_JSON).cacheControl(cc);
+		return response.build();
+		
 	}
 
 	@GET
@@ -80,7 +87,7 @@ public class BookService {
 			Book book = mapper.readValue(bookStr, Book.class);
 			boolean success = create.execute(book);
 			String bookJSON = mapper.writeValueAsString(book);
-			if (success) {
+			if (!success) {
 				return Response.status(201).entity(bookJSON).build();
 			} else
 				return Response.status(500).entity("").build();

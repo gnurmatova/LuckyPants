@@ -3,10 +3,6 @@ package launch;
 import java.io.File;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.SecurityCollection;
-import org.apache.catalina.deploy.SecurityConstraint;
-import org.apache.catalina.realm.MemoryRealm;
 import org.apache.catalina.startup.Tomcat;
 
 public class Main {

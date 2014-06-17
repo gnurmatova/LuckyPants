@@ -3,8 +3,6 @@ package com.luckypants.command;
 import java.util.ArrayList;
 
 import com.luckypants.model.Author;
-import com.luckypants.model.Book;
-import com.luckypants.mongo.BooksConnectionProvider;
 import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
