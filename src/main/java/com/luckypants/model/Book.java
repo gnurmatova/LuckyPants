@@ -13,21 +13,23 @@ public class Book {
 	private String title;
 
 	@JsonIgnore private Author author;
+	@JsonIgnore private image img;
 	private String _author_id;
 	private String ISBN;
-	private String image;
-	 /**
-	 * @return the image
+	
+	
+	/**
+	 * @return the img
 	 */
-	public String getImage() {
-		return image;
+	public image getImg() {
+		return img;
 	}
 
 	/**
-	 * @param image the image to set
+	 * @param img the img to set
 	 */
-	public void setImage(String image) {
-		this.image = image;
+	public void setImg(image img) {
+		this.img = img;
 	}
 
 	@JsonDeserialize(as=ArrayList.class, contentAs=String.class)

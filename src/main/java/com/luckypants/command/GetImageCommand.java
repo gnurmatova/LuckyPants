@@ -1,21 +1,23 @@
 package com.luckypants.command;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.luckypants.model.Author;
+import com.luckypants.model.Book;
 import com.luckypants.model.image;
 import com.luckypants.mongo.ConnectionProvider;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
-public class GetAuthorCommand {
+
+public class GetImageCommand {
 	ObjectMapper mapper = new ObjectMapper();
 
-	public Author execute(String key, String value) {
+	public image execute(String key, String value) {
 		ConnectionProvider conn = new ConnectionProvider();
-		DBCollection authorsCollection = conn.getCollection("authors");
+		DBCollection imageCollection = conn.getCollection("images");
 		
 		BasicDBObject searchQuery = new BasicDBObject();
 		if (key.equals("_id")) {
@@ -24,22 +26,21 @@ public class GetAuthorCommand {
 			searchQuery.put(key, value);
 		}
 
-		DBObject author = authorsCollection.findOne(searchQuery);
+		DBObject image = imageCollection.findOne(searchQuery);
 
-		Author vauthor=null;
+		image vimage=null;
 		// Now find the Author
 		try {
-			vauthor = mapper.readValue(author.toString(), Author.class);
+			vimage = mapper.readValue(image.toString(), image.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return vauthor;
+		return vimage;
 	}
-
 	public static void main(String[] args) {
-		GetAuthorCommand command = new GetAuthorCommand();
+		GetImageCommand command = new GetImageCommand();
 
-		Author b = command.execute("fname", "asdf.jpg");
+		image b = command.execute("imagename", "asdf.jpg");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			System.out.println(mapper.writeValueAsString(b));
@@ -47,4 +48,5 @@ public class GetAuthorCommand {
 			e.printStackTrace();
 		}
 	}
+
 }

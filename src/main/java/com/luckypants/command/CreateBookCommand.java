@@ -6,6 +6,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.luckypants.model.Author;
 import com.luckypants.model.Book;
+import com.luckypants.model.image;
 import com.luckypants.mongo.BooksConnectionProvider;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -34,18 +35,25 @@ public class CreateBookCommand {
 		CreateBookCommand create = new CreateBookCommand();
 		Book book = new Book();
 		Author author = new Author();
-		author.setFname("Gula");
-		author.setLname("Nurmatova");
+		author.setFname("rampura234567");
+		author.setLname("raghu");
+		image img=new image();
+		img.setImagename("abcdeimage");
+		CreateImageCommand createimage=new CreateImageCommand();
 		CreateAuthorCommand createAuthor = new CreateAuthorCommand();
 		String _id = createAuthor.execute(author);
+		String _imid= createimage.execute(img);
 		book.setTitle("Book2");
 		book.setISBN("1234");
 		book.set_author_id(_id);
+		book.setImg(img);
 		ArrayList<String>genres = new ArrayList<String>();
 		genres.add("Comedy");
 		genres.add("Humor");
 		book.setGenres(genres);
 		if (create.execute(book)) {
+			System.out.println(book.getImg().getImagename());
+			System.out.println(book.get_author_id());
 			System.out.println("SUCCESS:Book Created");
 		} else {
 			System.out.println("ERROR:Failed to create book");

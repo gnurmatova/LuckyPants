@@ -10,12 +10,14 @@
 base_url="/rest/books/";
 meta_url="/rest/metadata/";
 authors_url="/rest/books/authors/";
+image_url="/rest/books/images/";
 $(document).ready(function(){
  
 	  $.getJSON(meta_url+"book",function(data){
   		$.each(data, function(key, value){
   			
-  			if(key!="author" && key!="genres"){
+  			if(key!="author" && key!="genres" && key!="img" 
+  				 && key!="_author_id"){
   				console.log("key" +key);
   				$("div.book_div").append("<br/>Please enter " + key + ":"+"<input type='text' name='"+key+"'"+">");
   			}
@@ -43,6 +45,31 @@ $(document).ready(function(){
 	        });
 	        });
 	 // ends here
+	 
+	 
+	 $.getJSON(meta_url+"book",function(data){
+	        $.each(data, function(key, value){
+	        if(key=="_author_id"){
+	        $("div.book_div").append("<br/>Please select image: <select class='simg' name='_image_id '>");
+	        $("div.book_div").append(function(){
+	        $.getJSON(image_url,function(adata){      	
+	        $.each(adata, function(akey, avalue){
+	        	console.log("value123 "+avalue.imagename);
+	        $(".simg").append("<option value='"+avalue.id+"'>"+avalue.imagename+"</option>");
+	        console.log("<option value='"+avalue.id+"'>"+avalue.fname+"</option>");
+	        });
+	        
+	        });
+	        }
+	        );
+	        $("div.book_div").append("</select>");
+	        }
+	        
+	        });
+	        });
+	 
+	 
+	 
     $.fn.serializeObject = function()
     {
        var o = {};
@@ -73,7 +100,8 @@ $(document).ready(function(){
                 crossDomain: true,
                 dataType: "json",
                 success: function (data, status, jqXHR) {
-                    alert("success");
+                  	alert(JSON.stringify(data));
+                	  //alert("success");
                 },
                 error: function (jqXHR, status) {
                     console.log(jqXHR);

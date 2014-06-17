@@ -25,9 +25,11 @@ import com.luckypants.command.GetAuthorCommand;
 import com.luckypants.command.GetBookCommand;
 import com.luckypants.command.ListAllAuthorsCommand;
 import com.luckypants.command.ListAllBooksCommand;
+import com.luckypants.command.ListAllImagesCommand;
 import com.luckypants.command.ProvidePackagedFileCommand;
 import com.luckypants.model.Author;
 import com.luckypants.model.Book;
+import com.luckypants.model.image;
 import com.luckypants.mongo.ConnectionProvider;
 import com.luckypants.properties.PropertiesLookup;
 import com.mongodb.DBCollection;
@@ -67,6 +69,21 @@ public class BookService {
 		return Response.status(200).entity(authorString).build();
 	}
 
+	@GET
+	@Path("/images")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response listimages() {
+		ListAllImagesCommand listimages = new ListAllImagesCommand();
+		ArrayList<image> list = listimages.execute();
+		String imageString= null;
+		try {
+			imageString = mapper.writeValueAsString(list);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return Response.status(200).entity(imageString).build();
+	}
 
 	@GET
 	@Path("properties/{property}")

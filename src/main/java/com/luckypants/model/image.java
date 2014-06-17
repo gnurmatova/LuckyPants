@@ -1,5 +1,8 @@
 package com.luckypants.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class image {
 
 	
@@ -16,7 +19,9 @@ public class image {
 	 * @param imagename the imagename to set
 	 */
 	public void setImagename(String imagename) {
+		
 		this.imagename = imagename;
+		
 	}
 	
 }
